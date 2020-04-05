@@ -108,6 +108,7 @@ $(document).ready(function () {
     layerswitcher = L.control.layers(baseLayers, {}, {collapsed: true}).addTo(map);
     // var i=0;
     var json;
+    var stringreceived;
 
     
     var dataLayer;
@@ -132,6 +133,7 @@ $(document).ready(function () {
         // }
        
         // var data ={"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[83.78683, 28.384756], [83.78683, 28.417372], [83.814289, 28.417372], [83.814289, 28.384756], [83.78683, 28.384756]]]}, "properties": {FID: 0, min: 1654}}]}
+        stringreceived=receive;
         json=JSON.parse(receive);
         dataLayer=L.geoJson(json,{
             style:{
@@ -200,8 +202,11 @@ $(document).ready(function () {
         var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(json));
     
         // Create export
+        // console.log(data);
+        // console.log(JSON.stringify(json));
+        console.log(convertedData);
         document.getElementById('export').setAttribute('href', 'data:' + convertedData);
-        document.getElementById('export').setAttribute('download','data.geojson');
+        document.getElementById('export').setAttribute('download','data.json');
     }
     
     document.getElementById('sum').onclick = function(e) {
@@ -322,7 +327,7 @@ $(document).ready(function () {
         
     
         // Stringify the GeoJson
-        var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data));
+        
         console.log(JSON.stringify(data));
         if(JSON.stringify(data)=='{"type":"FeatureCollection","features":[]}'){
             alert("Data is null !");
