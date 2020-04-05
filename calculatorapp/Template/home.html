@@ -12,11 +12,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css' rel='stylesheet' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.js"></script>
 
     <!--Add draw plugin -->
     <link rel='stylesheet' href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' />
     <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+    
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    
+    <script src={% static "js/theme.js" %}></script>
+    
+    
+
     <style>
         body {
             margin: 0;
@@ -28,7 +41,7 @@
             bottom: 0;
             width: 85%;
         }
-        #delete{
+        #delete,#export{
             position: absolute;
             top:50px;
             right:10px;
@@ -42,12 +55,16 @@
             font-size:12px;
             text-decoration:none;
         }
-        #load {
-            top:90px;
+        
+        #export {
+            
+            top:100px;
+            display:none;
+            
         }
-        #receive {
+        /* #receive {
             top:130px;
-        }
+        } */
     </style>
 </head>
 
@@ -58,10 +75,14 @@
                 <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
                     <div class="sidebar-brand-icon rotate-n-15"></div>
                     <div class="sidebar-brand-text mx-3"><span>zonal<br>Calculator<br></span></div>
-                </a><button class="btn btn-primary pull-right"  type="button" style="margin: 15px;" id='load'><i class="fa fa-cloud-upload" style="margin: 5px;"></i>LOAD</button><button class="btn btn-primary pull-right" type="button" style="margin: 15px;"><i class="fa fa-arrow-circle-down" style="margin: 5px;"></i>MIN</button>
+                </a><button class="btn btn-primary pull-right"  type="button" style="margin: 15px;" id='load'><i class="fa fa-cloud-upload" style="margin: 5px;"></i>LOAD</button>
+                <button class="btn btn-primary pull-right" id='min' type="button" style="margin: 15px;"><i class="fa fa-arrow-circle-down" style="margin: 5px;"></i>MIN</button>
                 <button
-                    class="btn btn-primary pull-right" type="button" style="margin: 15px;"><i class="fa fa-arrow-circle-up" style="margin: 5px;"></i>MAX</button><button class="btn btn-primary pull-right" type="button" style="margin: 15px;"><i class="fa fa-stack-exchange" style="margin: 5px;"></i>SUM</button><button class="btn btn-primary pull-right"
-                        type="button" style="margin: 15px;"><i class="fa fa-reorder" style="margin: 5px;"></i>MEAN</button><button class="btn btn-primary pull-right" type="button" style="margin: 15px;"><i class="fa fa-bar-chart-o" style="margin: 5px;"></i>MAJORITY</button>
+                    class="btn btn-primary pull-right" type="button" id='max' style="margin: 15px;"><i class="fa fa-arrow-circle-up" style="margin: 5px;"></i>MAX</button>
+                    <button class="btn btn-primary pull-right" id='sum' type="button" style="margin: 15px;"><i class="fa fa-stack-exchange" style="margin: 5px;"></i>SUM</button>
+                    <button id='mean' class="btn btn-primary pull-right"
+                        type="button" style="margin: 15px;"><i class="fa fa-reorder" style="margin: 5px;"></i>MEAN</button>
+                        <button class="btn btn-primary pull-right" type="button" id='majority' style="margin: 15px;"><i class="fa fa-bar-chart-o" style="margin: 5px;"></i>MAJORITY</button>
                     <button
                         class="btn btn-primary pull-right" id='receive' type="button" style="margin: 15px;"><i class="fa fa-bullseye" style="margin: 5px;"></i>ALL</button><span class="text-capitalize text-center text-white-50">Copyright © Kshitiz <br>2020</span></div>
         </nav>
@@ -72,118 +93,15 @@
                         <!-- <div class="col"> -->
                             <div id='map'></div>
                             <div id='delete'>Delete Features</div>
-                        
+                            <a href='#' id='export'>Export Result</a>
                            
-                           
-
-                            <script>
-                                var map = L.mapbox.map('map')
-                                    .setView([28.3949, 84.1240], 11);
-
-                                // Add layers to the map
-                                var googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
-                                maxZoom: 20,
-                                subdomains:['mt0','mt1','mt2','mt3']
-                                }).addTo(map);
-
-                                L.control.layers({
-                                    
-                                        'Terrain Map': L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
-                                        maxZoom: 20,
-                                        subdomains:['mt0','mt1','mt2','mt3']
-                                    }),
-                                    'layer Map': L.tileLayer.wms('http://localhost:9090/geoserver/raster/wms/',{
-                                        layers: "raster:elevation1proj",
-                                        format: 'image/png',
-                                        transparent: true,
-                                        request:"GetMap",
-                                    })
-                                }).addTo(map);
-
-                                var featureGroup = L.featureGroup().addTo(map);
-
-                                var drawControl = new L.Control.Draw({
-                                    edit: {
-                                        featureGroup: featureGroup
-                                    }
-                                }).addTo(map);
-
-                                map.on('draw:created', function(e) {
-
-                                    // Each time a feauter is created, it's added to the over arching feature group
-                                    featureGroup.addLayer(e.layer);
-                                });
-
-
-                                // on click, clear all layers
-                                document.getElementById('delete').onclick = function(e) {
-                                    featureGroup.clearLayers();
-                                    
-                                }
-                                document.getElementById('receive').onclick = function(e) {
-
-                                    $.ajax( 
-                                        { 
-                                            type:"GET", 
-                                            url: "call", 
-                                            
-                                        success: function( data ) 
-                                        { 
-                                            alert(data);
-                                            console.log("iam from success22"+ data);
-                                            } 
-                                    })  
-                                }
-
-                                document.getElementById('load').onclick = function(e) {
-                                    // Extract GeoJson from featureGroup
-                                    
-                                    var data = featureGroup.toGeoJSON();
-                                    console.log(data);
-                                    
-
-                                    // Stringify the GeoJson
-                                    var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data));
-                                    console.log(JSON.stringify(data));
-                                    if(JSON.stringify(data)=='{"type":"FeatureCollection","features":[]}'){
-                                        alert("Data is null !");
-                                    }else{
-                                            $.ajax( 
-                                            { 
-                                                type:"GET", 
-                                                url: "data", 
-                                                data:{ 
-                                                        vector: JSON.stringify(data) 
-                                            }, 
-                                            success: function( data ) 
-                                            { 
-                                                alert("Data fetched to database !");
-                                                console.log("iam from success"+ data);
-                                                } 
-                                        })
-
-                                    }
-                                    
-                                    
-
-                                    // Create export
-
-                                    // document.getElementById('export').setAttribute('href', 'data:' + convertedData);
-                                    // document.getElementById('export').setAttribute('download','data.geojson');
-                                    
-                                }
-                            </script>
                         <!-- </div> -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     
-    <script src={% static "js/theme.js" %}></script>
 </body>
-
+<script src={% static "js/map.js" %}></script>
 </html>
