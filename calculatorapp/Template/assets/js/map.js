@@ -71,12 +71,7 @@ $(document).ready(function () {
     osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     });
-    var dem = L.tileLayer.wms('http://localhost:9090/geoserver/raster/wms/',{
-        layers: "raster:elevation1proj",
-        format: 'image/png',
-        transparent: true,
-        request:"GetMap",
-    }).addTo(map);
+    
                 
     var googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
         maxZoom: 20,
@@ -101,12 +96,18 @@ $(document).ready(function () {
                     "Google Hybrid": googleHybrid,
                     "Google Satellite": googleSat,
                     "Google Terrain": googleTerrain,
-                    "dem":dem
+                    // "dem":dem
                     // "Mapbox Tiles": mapboxTiles
                 };
                 
     layerswitcher = L.control.layers(baseLayers, {}, {collapsed: true}).addTo(map);
     // var i=0;
+    var dem = L.tileLayer.wms('http://localhost:9090/geoserver/raster/wms/',{
+        layers: "raster:elevation1proj",
+        format: 'image/png',
+        transparent: true,
+        request:"GetMap",
+    }).addTo(map);
     var json;
     var stringreceived;
 
@@ -114,8 +115,9 @@ $(document).ready(function () {
     var dataLayer;
     function loadreceiveddata(receive){
         var x = document.getElementById('export');
-            
+        // var y = document.getElementById('deleteshape');
         x.style.display = "block";
+        // y.style.display = "block";
             
 
 
@@ -185,14 +187,41 @@ $(document).ready(function () {
        
     // on click, clear all layers
     document.getElementById('delete').onclick = function(e) {
-        editableLayers.clearLayers();
+        // if(editableLayers.hasLayer==true){
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover your drawn geometry",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+              })
+              .then((willDelete) => {
+                if (willDelete) {
+                    editableLayers.clearLayers();
+                    // if(map.hasLayer(dataLayer)){
+                    //     map.removeLayer(dataLayer);
+                    //     console.log(i);
+                    // }
+                    var x = document.getElementById('export');            
+                    x.style.display = "none";
+                  swal("Poof! Your drawn geometry has been deleted!", {
+                    icon: "success",
+                  });
+                } else {
+                  swal("Your Geometry is not deleted!");
+                }
+              });
+
+        // }
+        
+        
+        
+    }
+    document.getElementById('deleteshape').onclick = function(e) {
         if(map.hasLayer(dataLayer)){
             map.removeLayer(dataLayer);
             console.log(i);
-        }
-        var x = document.getElementById('export');
-            
-        x.style.display = "none";
+        } 
     }
     document.getElementById('export').onclick = function(e) {
         // Extract GeoJson from featureGroup
@@ -225,7 +254,7 @@ $(document).ready(function () {
                 },
             error: function() 
             { 
-                alert("Please load data First");
+                swal ( "Oops" ,  "Please load data First!" ,  "error" );
     
                 } 
         })  
@@ -246,7 +275,8 @@ $(document).ready(function () {
                 },
             error: function() 
             { 
-                alert("Please load data First");
+                
+                swal ( "Oops" ,  "Please load data First!" ,  "error" );
     
                 }  
         })  
@@ -267,7 +297,7 @@ $(document).ready(function () {
                 },
             error: function() 
             { 
-                alert("Please load data First");
+                swal ( "Oops" ,  "Please load data First!" ,  "error" );
     
                 }  
         })  
@@ -288,7 +318,7 @@ $(document).ready(function () {
                 },
             error: function() 
             { 
-                alert("Please load data First");
+                swal ( "Oops" ,  "Please load data First!" ,  "error" );
     
                 } 
         })  
@@ -311,7 +341,7 @@ $(document).ready(function () {
                 }, 
             error: function() 
             { 
-                alert("Please load data First");
+                swal ( "Oops" ,  "Please load data First!" ,  "error" );
     
                 } 
         })  
@@ -330,7 +360,8 @@ $(document).ready(function () {
         
         console.log(JSON.stringify(data));
         if(JSON.stringify(data)=='{"type":"FeatureCollection","features":[]}'){
-            alert("Data is null !");
+            // alert("Data is null !");
+            swal ( "Oops" ,  "Please load data First!" ,  "error" );
         }else{
                 $.ajax( 
                 { 
@@ -340,8 +371,8 @@ $(document).ready(function () {
                             vector: JSON.stringify(data) 
                 }, 
                 success: function( data ) 
-                { 
-                    alert("Data Loaded Succesfully !");
+                {                     
+                    swal("Next Step to Calculation !", "Data Loaded Succesfully !", "success");
                     console.log(data);
                     } 
             })
@@ -364,7 +395,7 @@ $(document).ready(function () {
                 },
             error: function() 
             { 
-                alert("Please load data First");
+                swal ( "Oops" ,  "Please load data First!" ,  "error" );
     
                 }  
         })  
