@@ -70,7 +70,7 @@ oauthlib==3.1.0
 odfpy==1.4.0
 openpyxl==3.0.0
 Pillow==7.0.0
-protobuf==3.11.4
+protobuf== 3.11.3
 psycopg2==2.8.3
 pyasn1==0.4.8
 pyasn1-modules==0.2.7
@@ -96,8 +96,6 @@ Shapely==1.6.4.post1
 simplejson==3.17.0
 six==1.12.0
 snuggs==1.4.7
-social-auth-app-django==3.1.0
-social-auth-core==3.2.0
 sqlparse==0.3.0
 subprocess32==3.5.4
 tablib==0.14.0
