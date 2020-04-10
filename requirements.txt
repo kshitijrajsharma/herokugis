@@ -61,7 +61,7 @@ MarkupPy==1.14
 MarkupSafe==1.1.1
 mccabe==0.6.1
 mkl-fft==1.0.0.17
-mkl-random==1.1.0
+mkl-random==1.0.0.8
 mkl-service==2.3.0
 munch==2.5.0
 numexpr==2.7.1
