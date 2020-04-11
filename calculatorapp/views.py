@@ -28,7 +28,7 @@ def receivedata(request):
 def senddata(request):
     if request.method == 'GET':
         param = request.GET['parameter']
-        stats = zonal_stats("data/destination_data.shp", 'data/elevation1proj.tif',stats=list(param.split(" ")),geojson_out=True)
+        stats = zonal_stats("data/destination_data.shp", 'data/nepal250.tif',stats=list(param.split(" ")),geojson_out=True)
         return HttpResponse(json.dumps(stats) )
     else:
         return HttpResponse("unsuccesful")
