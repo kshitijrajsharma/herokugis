@@ -9,10 +9,3 @@ class studyarea(models.Model):
     class Meta:
         verbose_name_plural = "studyarea"
 
-class Post(models.Model):
-    post_heading= models.CharField(max_length=200)
-    post_text=models.TextField()
-    post_author= models.CharField(max_length= 100,default='default')
-
-class Like(models.Model):
-    post= models.ForeignKey(Post,on_delete = 'CASCADE')

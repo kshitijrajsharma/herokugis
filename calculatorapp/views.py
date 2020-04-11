@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import Post, Like
+
 from rasterstats import zonal_stats
 import geojson,gdal,subprocess
 import os.path,os,json

@@ -9,5 +9,3 @@ class studyareaadmin(LeafletGeoAdmin):
 # @admin.register(raster)
 # class rasateradmin(LeafletGeoAdmin):
 #     pass
-admin.site.register(Post)
-admin.site.register(Like)
