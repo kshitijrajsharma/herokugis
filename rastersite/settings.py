@@ -163,6 +163,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # RASTER_USE_CELERY = True
 RASTER_USE_CELERY=False
 RASTER_WORKDIR = "data/generatedraster/"
-
+#  fdgfd
 GDAL_LIBRARY_PATH = os.environ.get('GDAL_LIBRARY_PATH')
 GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH')
