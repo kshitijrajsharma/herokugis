@@ -8,4 +8,3 @@ class studyareaadmin(LeafletGeoAdmin):
     list_display = ('name', 'objectid')
 # @admin.register(raster)
 # class rasateradmin(LeafletGeoAdmin):
-#     pass
