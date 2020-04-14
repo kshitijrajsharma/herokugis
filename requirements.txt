@@ -1,6 +1,7 @@
 affine==2.3.0
 amqp==2.5.2
-astroid==2.3.2
+astroid==2.3.2 
+#jljdkasfdfadfadfsfggdf sdfadf
 attrs==19.3.0
 billiard==3.6.3.0
 boto3==1.12.32
@@ -36,7 +37,7 @@ et-xmlfile==1.0.1
 Fiona==1.8.4
 folium==0.10.1
 future==0.18.2
-# GDAL==2.3.3
+GDAL==2.3.3
 gdal2mbtiles==2.1.2
 gdal2tiles==0.1.6
 geojson==2.5.0
@@ -60,12 +61,12 @@ lazy-object-proxy==1.4.3
 MarkupPy==1.14
 MarkupSafe==1.1.1
 mccabe==0.6.1
-mkl-fft==1.0.0.17
-mkl-random==1.0.0.8
+# mkl-fft==1.0.0.17
+# mkl-random==1.0.0.8
 # mkl-service==2.3.0
 munch==2.5.0
 numexpr==2.7.1
-numpy==1.16.5
+numpy
 oauthlib==3.1.0
 odfpy==1.4.0
 openpyxl==3.0.0

@@ -3,7 +3,8 @@ from django.shortcuts import render
 from django.http import JsonResponse
 
 from rasterstats import zonal_stats
-import geojson,gdal,subprocess
+from osgeo import gdal
+import geojson,subprocess
 import os.path,os,json
 
 
