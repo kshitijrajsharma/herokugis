@@ -4,12 +4,12 @@ $(document).ready(function () {
     console.log("thissss");
 
     var map = L.map('map',{
-        minZoom:10.5,
+        minZoom:7,
         preferCanvas:true,
         // drawControl: true,
     });
     
-    map.setView([28.2957487, 83.8123341], 10.5);
+    map.setView([28.2957487, 83.8123341], 8);
     var editableLayers = new L.FeatureGroup();
     map.addLayer(editableLayers);
     var options = {
@@ -71,6 +71,12 @@ $(document).ready(function () {
     osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     });
+    var dem = L.tileLayer.wms('http://localhost:9090/geoserver/raster/wms/',{
+        layers: "raster:elevation1proj",
+        format: 'image/png',
+        transparent: true,
+        request:"GetMap",
+    }).addTo(map);
     
                 
     var googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
@@ -80,7 +86,7 @@ $(document).ready(function () {
     googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
         maxZoom: 20,
         subdomains:['mt0','mt1','mt2','mt3']
-    }).addTo(map);
+    });
     googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
         maxZoom: 20,
         subdomains:['mt0','mt1','mt2','mt3']
@@ -88,7 +94,7 @@ $(document).ready(function () {
     googleTerrain = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',{
         maxZoom: 20,
         subdomains:['mt0','mt1','mt2','mt3']
-    });
+    }).addTo(map);
     // mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/skshitiz1/cjvosths00oqu1cln1v7765pf/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoic2tzaGl0aXoxIiwiYSI6ImNqcmJ2czBjODBhMTgzeWxwM2t1djJuaXUifQ.wlFktg-soH3B_pqVyJj2Ig')
     var baseLayers = {
                     "OpenStreetMap": osm,
@@ -96,18 +102,13 @@ $(document).ready(function () {
                     "Google Hybrid": googleHybrid,
                     "Google Satellite": googleSat,
                     "Google Terrain": googleTerrain,
-                    // "dem":dem
+                    "Nepal Dem":dem
                     // "Mapbox Tiles": mapboxTiles
                 };
                 
     layerswitcher = L.control.layers(baseLayers, {}, {collapsed: true}).addTo(map);
     // var i=0;
-    var dem = L.tileLayer.wms('http://localhost:9090/geoserver/raster/wms/',{
-        layers: "raster:elevation1proj",
-        format: 'image/png',
-        transparent: true,
-        request:"GetMap",
-    }).addTo(map);
+    
     var json;
     var stringreceived;
 
