@@ -10,6 +10,9 @@ $(document).ready(function () {
     });
     
     map.setView([28.2957487, 83.8123341], 8);
+    
+    
+    
     var editableLayers = new L.FeatureGroup();
     map.addLayer(editableLayers);
     var options = {
@@ -72,11 +75,12 @@ $(document).ready(function () {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     });
     var dem = L.tileLayer.wms('http://localhost:9090/geoserver/raster/wms/',{
-        layers: "raster:elevation1proj",
+        layers: "raster:nepal250",
         format: 'image/png',
         transparent: true,
         request:"GetMap",
     }).addTo(map);
+  
     
                 
     var googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
@@ -137,6 +141,7 @@ $(document).ready(function () {
        
         // var data ={"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[83.78683, 28.384756], [83.78683, 28.417372], [83.814289, 28.417372], [83.814289, 28.384756], [83.78683, 28.384756]]]}, "properties": {FID: 0, min: 1654}}]}
         stringreceived=receive;
+        console.log(stringreceived);
         json=JSON.parse(receive);
         dataLayer=L.geoJson(json,{
             style:{
@@ -164,6 +169,8 @@ $(document).ready(function () {
                     },
                     click: function (event) {
                         console.log("clicked");
+                        // openNav();
+                    
                     }
                 });
                 var pushcontent = "";
@@ -221,8 +228,32 @@ $(document).ready(function () {
     document.getElementById('deleteshape').onclick = function(e) {
         if(map.hasLayer(dataLayer)){
             map.removeLayer(dataLayer);
-            console.log(i);
+            // console.log(i);
         } 
+    }
+    // document.getElementById('closehist').onclick = function(e) {
+    //     closenav();
+    // }
+    document.getElementById('histogram').onclick = function(e) {
+        $.ajax( 
+            { 
+                type:"GET", 
+                url: "histogram", 
+                data:{ 
+                            parameter: "histogram"
+                }, 
+                
+            success: function( data ) 
+            { 
+                console.log(data);
+                },
+            error: function() 
+            { 
+                swal ( "Oops" ,  "Please do calculation first" ,  "error" );
+    
+                } 
+        }) 
+        
     }
     document.getElementById('export').onclick = function(e) {
         // Extract GeoJson from featureGroup
@@ -370,6 +401,7 @@ $(document).ready(function () {
                     url: "data", 
                     data:{ 
                             vector: JSON.stringify(data) 
+                            
                 }, 
                 success: function( data ) 
                 {                     
@@ -401,5 +433,24 @@ $(document).ready(function () {
                 }  
         })  
     }
+    // function openNav() {
+    //     document.getElementById("mySidenav").style.width = "250px";
+        
+    //     // var elem = document.createElement("img");
+    //     //     elem.setAttribute("src", "img/teststatic.png");
+    //     //     elem.setAttribute("height", "100%");
+    //     //     elem.setAttribute("width", "100%");
+    //     //     elem.setAttribute("alt", "Flower");
+    //     //     elem.setAttribute("id", "hist");
+    //     // document.getElementById("mySidenav").appendChild(elem);
+        
+    //   }
+      
+    //   /* Set the width of the side navigation to 0 */
+    // function closenav() {
+    //     document.getElementById("mySidenav").style.width = "0";
+    //     // document.getElementById("mySidenav").remove(elem);
+       
+    // }
     
 });
