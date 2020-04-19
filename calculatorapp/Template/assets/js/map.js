@@ -362,7 +362,7 @@ $(document).ready(function () {
                 type:"GET", 
                 url: "call", 
                 data:{ 
-                            parameter: "majority"
+                            parameter: "count"
                 }, 
                 
             success: function( data ) 
@@ -419,7 +419,7 @@ $(document).ready(function () {
                 type:"GET", 
                 url: "call", 
                 data:{ 
-                            parameter: "min max mean median majority sum"
+                            parameter: "all"
                 }, 
                 
             success: function( data ) 
