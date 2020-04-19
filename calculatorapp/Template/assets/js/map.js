@@ -212,11 +212,9 @@ $(document).ready(function () {
                     // }
                     var x = document.getElementById('export');            
                     x.style.display = "none";
-                  swal("Poof! Your drawn geometry has been deleted!", {
-                    icon: "success",
-                  });
+                  
                 } else {
-                  swal("Your Geometry is not deleted!");
+                  
                 }
               });
 
@@ -235,14 +233,16 @@ $(document).ready(function () {
     //     closenav();
     // }
 
-
+    var k=0;
     document.getElementById('histogram').onclick = function(e) {
+        
+        k=k+1;
         $.ajax( 
             { 
                 type:"GET", 
                 url: "histogram", 
                 data:{ 
-                            parameter: "histogram"
+                            parameter: k
                 }, 
                 
             success: function( data ) 
@@ -278,16 +278,19 @@ $(document).ready(function () {
         
     }
     function showhist(){
-        var modal = document.getElementById("myModal");
+        modal = document.getElementById("myModal");
 
 // Get the image and insert it inside the modal - use its "alt" text as a caption
-        var img = document.getElementById("myImg");
-        var modalImg = document.getElementById("img01");
-        var captionText =document.getElementById("caption");
+        // img = document.getElementById("myImg");
+        
+        // modalImg = document.getElementById("img01");
+        modalImg = document.getElementById("img01");
+        modalImg.src = "static/img/histogram"+k+".png";
+        captionText =document.getElementById("caption");
         
         modal.style.display = "block";
-        modalImg.src = img.src;
-        captionText.innerHTML = img.alt;
+        // modalImg.src = "static/img/histogram.png";
+        captionText.innerHTML = "Digital Elevation Histogram";
         
         
         // Get the <span> element that closes the modal
@@ -296,6 +299,11 @@ $(document).ready(function () {
         // When the user clicks on <span> (x), close the modal
         span.onclick = function() { 
         modal.style.display = "none";
+        
+        delete modalImg.src;
+        delete modalImg;
+        delete captionText;
+        console.log("deleted")
         }
     }
 
@@ -475,24 +483,5 @@ $(document).ready(function () {
                 }  
         })  
     }
-    // function openNav() {
-    //     document.getElementById("mySidenav").style.width = "250px";
-        
-    //     // var elem = document.createElement("img");
-    //     //     elem.setAttribute("src", "img/teststatic.png");
-    //     //     elem.setAttribute("height", "100%");
-    //     //     elem.setAttribute("width", "100%");
-    //     //     elem.setAttribute("alt", "Flower");
-    //     //     elem.setAttribute("id", "hist");
-    //     // document.getElementById("mySidenav").appendChild(elem);
-        
-    //   }
-      
-    //   /* Set the width of the side navigation to 0 */
-    // function closenav() {
-    //     document.getElementById("mySidenav").style.width = "0";
-    //     // document.getElementById("mySidenav").remove(elem);
-       
-    // }
-    
+
 });

@@ -15,6 +15,8 @@ from osgeo.gdalconst import *
 import numpy as np
 import sys
 import json 
+import shutil
+import earthpy.plot as ep
 # import geopandas as gpd
 
 
@@ -171,6 +173,12 @@ def senddata(request):
         remove()
         return HttpResponse("unsuccesful")
 def maskraster():
+    # file_raster="data/RGB.byte.masked.tif"
+    # file_histogram="calculatorapp/Template/assets/img/histogram.png"
+    # if os.path.exists(file_histogram):
+    #     os.remove(file_histogram)
+    # if os.path.exists(file_raster):
+    #     os.remove(file_raster)
     with fiona.open("data/destination_data.shp", "r") as shapefile:
         shapes = [feature["geometry"] for feature in shapefile]
     with rasterio.open("data/nepal250.tif") as src:
@@ -182,26 +190,29 @@ def maskraster():
                  "transform": out_transform})
     with rasterio.open("data/RGB.byte.masked.tif", "w", **out_meta) as dest:
         dest.write(out_image)
+
 def showhistogram(request):
     if request.method == 'GET':
-        file_histogram="calculatorapp/Template/assets/img/histogram.png"
-        if os.path.exists(file_histogram):
-            os.remove(file_histogram)
-        else:
-            matplotlib.use('Agg')
-            fp = r"data/RGB.byte.masked.tif"
-            raster = rasterio.open(fp)
-            show_hist(raster, bins=50, lw=0.0, stacked=False, alpha=0.3,histtype='stepfilled', title="Histogram")
-            # .after(100, animate)
-            # plt.plot()
-            plt.savefig('calculatorapp/Template/assets/img/histogram.png')
-            return HttpResponse('successful' )
+        param = request.GET['parameter']
+        
+        dem_path="data/RGB.byte.masked.tif"
+        with rasterio.open(dem_path) as src:
+            dem_in = src.read(1, masked=True)
+        ep.hist(dem_in, colors=['purple'],
+            title="Distribution of DEM Elevation Values",
+            xlabel='Elevation (meters)',
+            ylabel='Frequency')
+
+        plt.savefig("calculatorapp/Template/assets/img/histogram"+param+".png")
+        
+    
+        return HttpResponse('successful' )
     else:
         return HttpResponse("unsuccesful")  
 def remove():
     file_path="data/destination_data.shp"
     file_raster="data/RGB.byte.masked.tif"
-    file_histogram="calculatorapp/Template/assets/img/histogram.png"
+    file_histogram="calculatorapp/Template/assets/img"
     if os.path.exists(file_path):
         os.remove("data/destination_data.shp")
         os.remove("data/destination_data.shx")
@@ -211,7 +222,16 @@ def remove():
     if os.path.exists(file_raster):
         os.remove("data/RGB.byte.masked.tif")
     if os.path.exists(file_histogram):
-        os.remove("calculatorapp/Template/assets/img/histogram.png")
+        folder = 'calculatorapp/Template/assets/img'
+        for filename in os.listdir(folder):
+            file_path = os.path.join(folder, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            except Exception as e:
+                print('Failed to delete %s. Reason: %s' % (file_path, e))
 
         
         
