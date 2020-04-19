@@ -10,7 +10,8 @@ import rasterio
 import rasterio.mask
 import matplotlib
 from matplotlib import pyplot as plt
-from osgeo import gdal, ogr
+import gdal,ogr
+# from osgeo import gdal, ogr
 from osgeo.gdalconst import *
 import numpy as np
 import sys
