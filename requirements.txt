@@ -131,7 +131,6 @@ rasterio==1.0.21
 requests==2.23.0
 requests-oauthlib==1.2.0
 rsa==4.0
-# Rtree==0.9.3
 s3transfer==0.3.3
 scikit-image==0.16.2
 scipy==1.4.1
