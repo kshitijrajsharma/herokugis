@@ -184,21 +184,24 @@ def maskraster():
         dest.write(out_image)
 def showhistogram(request):
     if request.method == 'GET':
-        matplotlib.use('Agg')
-        fp = r"data/RGB.byte.masked.tif"
-        raster = rasterio.open(fp)
-        show_hist(raster, bins=50, lw=0.0, stacked=False, alpha=0.3,histtype='stepfilled', title="Histogram")
-        # .after(100, animate)
-        # plt.plot()
-        # plt.savefig('calculatorapp/Template/assets/img/histogram.png')
-        return HttpResponse('successful' )
+        file_histogram="calculatorapp/Template/assets/img/histogram.png"
+        if os.path.exists(file_histogram):
+            os.remove(file_histogram)
+        else:
+            matplotlib.use('Agg')
+            fp = r"data/RGB.byte.masked.tif"
+            raster = rasterio.open(fp)
+            show_hist(raster, bins=50, lw=0.0, stacked=False, alpha=0.3,histtype='stepfilled', title="Histogram")
+            # .after(100, animate)
+            # plt.plot()
+            plt.savefig('calculatorapp/Template/assets/img/histogram.png')
+            return HttpResponse('successful' )
     else:
-        return HttpResponse("unsuccesful")
-    
+        return HttpResponse("unsuccesful")  
 def remove():
     file_path="data/destination_data.shp"
     file_raster="data/RGB.byte.masked.tif"
-    # file_histogram="calculatorapp/Template/assets/img/histogram.png"
+    file_histogram="calculatorapp/Template/assets/img/histogram.png"
     if os.path.exists(file_path):
         os.remove("data/destination_data.shp")
         os.remove("data/destination_data.shx")
@@ -207,8 +210,8 @@ def remove():
         os.remove("data/data.geojson")
     if os.path.exists(file_raster):
         os.remove("data/RGB.byte.masked.tif")
-    # if os.path.exists(file_histogram):
-    #     os.remove("calculatorapp/Template/assets/img/histogram.png")
+    if os.path.exists(file_histogram):
+        os.remove("calculatorapp/Template/assets/img/histogram.png")
 
         
         

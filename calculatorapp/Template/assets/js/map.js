@@ -236,27 +236,68 @@ $(document).ready(function () {
     // }
 
 
-    // document.getElementById('histogram').onclick = function(e) {
-    //     $.ajax( 
-    //         { 
-    //             type:"GET", 
-    //             url: "histogram", 
-    //             data:{ 
-    //                         parameter: "histogram"
-    //             }, 
+    document.getElementById('histogram').onclick = function(e) {
+        $.ajax( 
+            { 
+                type:"GET", 
+                url: "histogram", 
+                data:{ 
+                            parameter: "histogram"
+                }, 
                 
-    //         success: function( data ) 
-    //         { 
-    //             console.log(data);
-    //             },
-    //         error: function() 
-    //         { 
-    //             swal ( "Oops" ,  "Please do calculation first" ,  "error" );
+            success: function( data ) 
+            { 
+                console.log(data);
+
+                swal({
+                    title: "Histogram Generated !",
+                    text: "Histogram can be analyzed with single Geometry, Having multiple geometry will create average of them",
+                    icon: "success",
+                    buttons: true,
+                    dangerMode: false,
+                  })
+                  .then((willDelete) => {
+                    if (willDelete) {
+                        console.log("from inside delete")
+                        showhist();
+                        
+                    } else {
+                    //   swal("Your Geometry is not deleted!");
+                    }
+                  });
+
+
+                
+                },
+            error: function() 
+            { 
+                swal ( "Oops" ,  "Please do calculation first" ,  "error" );
     
-    //             } 
-    //     }) 
+                } 
+        }) 
         
-    // }
+    }
+    function showhist(){
+        var modal = document.getElementById("myModal");
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+        var img = document.getElementById("myImg");
+        var modalImg = document.getElementById("img01");
+        var captionText =document.getElementById("caption");
+        
+        modal.style.display = "block";
+        modalImg.src = img.src;
+        captionText.innerHTML = img.alt;
+        
+        
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+        
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() { 
+        modal.style.display = "none";
+        }
+    }
 
     
     document.getElementById('export').onclick = function(e) {
