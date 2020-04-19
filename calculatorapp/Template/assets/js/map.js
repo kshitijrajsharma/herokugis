@@ -301,18 +301,15 @@ $(document).ready(function () {
 
     
     document.getElementById('export').onclick = function(e) {
-        // Extract GeoJson from featureGroup
-        // var data = editableLayers.toGeoJSON();
-    
-        // Stringify the GeoJson
-        var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(json));
-    
-        // Create export
-        // console.log(data);
-        // console.log(JSON.stringify(json));
-        console.log(convertedData);
-        document.getElementById('export').setAttribute('href', 'data:' + convertedData);
-        document.getElementById('export').setAttribute('download','data.json');
+        download(JSON.stringify(json), 'json.geojson', 'text/json');
+        
+    }
+    function download(content, fileName, contentType) {
+        var a = document.createElement("a");
+        var file = new Blob([content], {type: contentType});
+        a.href = URL.createObjectURL(file);
+        a.download = fileName;
+        a.click();
     }
     
     document.getElementById('sum').onclick = function(e) {
