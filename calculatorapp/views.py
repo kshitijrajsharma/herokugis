@@ -113,11 +113,11 @@ def zonal(vector_path, raster_path, nodata_value=None, global_src_extent=False,s
 
         feature_stats = {
 
-            'min': float(np.amin(masked)),
-            'mean': float(masked.mean(dtype=np.uint64)),
-            'max': float(masked.max()),
-            'std': float(masked.std()),
-            'sum': float(masked.sum(dtype=np.uint64)),
+            'min': int(np.amin(masked)),
+            'mean': int(masked.mean(dtype=np.uint64)),
+            'max': int(masked.max()),
+            'std': int(masked.std()),
+            'sum': int(masked.sum(dtype=np.uint64)),
             'count': int(masked.count()),
             'fid': int(feat.GetFID())}
 
@@ -143,6 +143,7 @@ def receivedata(request):
         subprocess.Popen(args)
         return HttpResponse('success' )
     else:
+
         return HttpResponse("unsuccesful")
 
 def senddata(request):
@@ -167,6 +168,7 @@ def senddata(request):
 
         return HttpResponse(json.dumps(data) )
     else:
+        remove()
         return HttpResponse("unsuccesful")
 def maskraster():
     with fiona.open("data/destination_data.shp", "r") as shapefile:
@@ -182,7 +184,7 @@ def maskraster():
         dest.write(out_image)
 def showhistogram(request):
     if request.method == 'GET':
-        matplotlib.use('TkAgg')
+        matplotlib.use('Agg')
         fp = r"data/RGB.byte.masked.tif"
         raster = rasterio.open(fp)
         show_hist(raster, bins=50, lw=0.0, stacked=False, alpha=0.3,histtype='stepfilled', title="Histogram")

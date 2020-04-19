@@ -234,27 +234,31 @@ $(document).ready(function () {
     // document.getElementById('closehist').onclick = function(e) {
     //     closenav();
     // }
-    document.getElementById('histogram').onclick = function(e) {
-        $.ajax( 
-            { 
-                type:"GET", 
-                url: "histogram", 
-                data:{ 
-                            parameter: "histogram"
-                }, 
+
+
+    // document.getElementById('histogram').onclick = function(e) {
+    //     $.ajax( 
+    //         { 
+    //             type:"GET", 
+    //             url: "histogram", 
+    //             data:{ 
+    //                         parameter: "histogram"
+    //             }, 
                 
-            success: function( data ) 
-            { 
-                console.log(data);
-                },
-            error: function() 
-            { 
-                swal ( "Oops" ,  "Please do calculation first" ,  "error" );
+    //         success: function( data ) 
+    //         { 
+    //             console.log(data);
+    //             },
+    //         error: function() 
+    //         { 
+    //             swal ( "Oops" ,  "Please do calculation first" ,  "error" );
     
-                } 
-        }) 
+    //             } 
+    //     }) 
         
-    }
+    // }
+
+    
     document.getElementById('export').onclick = function(e) {
         // Extract GeoJson from featureGroup
         // var data = editableLayers.toGeoJSON();
