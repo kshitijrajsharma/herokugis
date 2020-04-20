@@ -138,7 +138,17 @@ def zonal(vector_path, raster_path, nodata_value=None, global_src_extent=False,s
 def receivedata(request):
     if request.method == 'GET':
         vector = request.GET['vector']
+        
         remove()
+        if(vector=="province"):
+            with open('calculatorapp/Template/assets/data/province.geojson') as f:
+                data = geojson.load(f)
+            with open('data/data.geojson', 'w')as f:
+                geojson.dump(data,f) 
+            args=['ogr2ogr','-f','ESRI Shapefile', "data/destination_data.shp",'data/data.geojson']
+            subprocess.Popen(args)
+            return HttpResponse('success' )
+       
         data=geojson.loads(vector)
         with open('data/data.geojson', 'w')as f:
             geojson.dump(data,f)           
@@ -154,7 +164,8 @@ def senddata(request):
         maskraster()
         param = request.GET['parameter']
         stats = zonal("data/destination_data.shp", 'data/nepal250.tif')
-        with open("data/data.geojson", 'r') as f:
+
+        with open('data/data.geojson', 'r') as f:
             data = json.load(f)
         if(param != "all"):
             i=0
@@ -174,12 +185,7 @@ def senddata(request):
         remove()
         return HttpResponse("unsuccesful")
 def maskraster():
-    # file_raster="data/RGB.byte.masked.tif"
-    # file_histogram="calculatorapp/Template/assets/img/histogram.png"
-    # if os.path.exists(file_histogram):
-    #     os.remove(file_histogram)
-    # if os.path.exists(file_raster):
-    #     os.remove(file_raster)
+  
     with fiona.open("data/destination_data.shp", "r") as shapefile:
         shapes = [feature["geometry"] for feature in shapefile]
     with rasterio.open("data/nepal250.tif") as src:

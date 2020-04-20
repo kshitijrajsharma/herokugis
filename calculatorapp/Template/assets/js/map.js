@@ -211,6 +211,10 @@ $(document).ready(function () {
                     //     map.removeLayer(dataLayer);
                     //     console.log(i);
                     // }
+                    if(map.hasLayer(province)){
+                        map.removeLayer(province);
+                        // console.log(i);
+                    }
                     var x = document.getElementById('export');            
                     x.style.display = "none";
                   
@@ -342,6 +346,12 @@ $(document).ready(function () {
                 } 
         })  
     }
+    document.getElementById('province').onclick = function(e) {
+        
+        province = new L.geoJson.ajax("static/data/province.geojson", {
+        }).addTo(map);
+    }
+   
     document.getElementById('min').onclick = function(e) {
         
         $.ajax( 
@@ -434,9 +444,35 @@ $(document).ready(function () {
     
     document.getElementById('load').onclick = function(e) {
         // Extract GeoJson from featureGroup
+        if(map.hasLayer(province)){
+           
+            console.log("i am from inside");
+            
+                $.ajax( 
+                    { 
+                        type:"GET", 
+                        url: "data", 
+                        data:{ 
+                                vector: "province" 
+                                
+                    }, 
+                    success: function( data ) 
+                    {                     
+                        swal("Next Step to Calculation !", "Data Loaded Succesfully !", "success");
+                        console.log(data);
+                        } 
+                })
+           
+            
+
+        }  else {
+
+        
+
         
         var data = editableLayers.toGeoJSON();
         console.log(data);
+        
         
     
         // Stringify the GeoJson
@@ -462,6 +498,10 @@ $(document).ready(function () {
             })
     
         }
+
+        }
+        
+        
     }
     document.getElementById('receive').onclick = function(e) {
         

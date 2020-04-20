@@ -39,15 +39,15 @@
             position: absolute;
             top: 0;
             bottom: 0;
-            width: 85%;
+            width: 83%;
         }
-        #delete,#export,#deleteshape{
+        #delete,#export,#deleteshape,#province,#district{
             position: absolute;
             top:50px;
             right:10px;
             z-index:100;
-            background:white;
-            color:black;
+            background:#4e73df;
+            color:white;
             padding:6px;
             border-radius:4px;
             font-family: 'Helvetica Neue';
@@ -65,6 +65,12 @@
         #deleteshape {
             
             top:100px;
+        }
+        #province{
+            top:180px;
+        }
+        #district{
+            top:220px;
         }
         .modal {
         display: none; /* Hidden by default */
@@ -203,22 +209,18 @@
                       </div>
                     <div class="row mb-3">
                         
-                        <!-- <div class="col"> -->
-                            <!-- <div id="mySidenav" class="sidenav">
-                                <a href="javascript:void(0)" class="closebtn" id="closehist">&times;</a>
-                                
-                                    <img src={% static "img\histogram.png"  %} id="hist"  >
-                                
-                              </div> -->
                             <div id='map'>
                                 
                             </div>
                             
-                            <div id='delete'>Delete Drawn Features</div>
+                            <div id='delete'>Delete  Features</div>
+                            
                             
                             <a href='#' id='export'>Export Result</a>
                             
                             <a href='#' id='deleteshape'>Delete Result</a>
+                            <button id="province" class="btn btn-primary pull-left">Nepal Province Data</button>
+                           
                            
                         <!-- </div> -->
                     </div>
